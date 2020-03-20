@@ -1,17 +1,17 @@
 '''
 Downloading and extracting the MovieLense dataset
 '''
-import urllib3
+import urllib.request
 
 def download_dataset():
     # Downloading movie lense dataset
     url = 'http://files.grouplens.org/datasets/movielens/ml-100k.zip'
-
+    urllib.request.urlretrieve(url, 'dataset')
 
 def download_checksum():
     # Downloading dataset checksum
     checksum_url = 'http://files.grouplens.org/datasets/movielens/ml-100k.zip.md5'
-
+    urllib.request.urlretrieve(checksum_url, 'checksum')
 
 def extract_dataset():
     pass
