@@ -1,10 +1,12 @@
 import codecs
+from pyspark.sql import SparkSession
 
 class MovieRecommender:
     def __init__(self):
         self.dataset_folder = './ml-100k/'
         self.item = self.dataset_folder + 'u.item'
         self.data = self.dataset_folder + 'u.data'
+        self.spark = SparkSession.builder.appName('movie_recommender').getOrCreate()
 
     def load_movie_names(self):
         movieNames = {}
@@ -12,4 +14,6 @@ class MovieRecommender:
             for line in f:
                 fields = line.split('|')
                 movieNames[int(fields[0])] = fields[1]
-        return movieNames 
+        return movieNames
+
+    
