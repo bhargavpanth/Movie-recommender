@@ -1,5 +1,6 @@
 import codecs
 from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, IntegerType, LongType
 
 class MovieRecommender:
     def __init__(self):
@@ -15,5 +16,17 @@ class MovieRecommender:
                 fields = line.split('|')
                 movieNames[int(fields[0])] = fields[1]
         return movieNames
+
+    def schema(self):
+        return StructType([ \
+                    StructField("userID", IntegerType(), True), \
+                    StructField("movieID", IntegerType(), True), \
+                    StructField("rating", IntegerType(), True), \
+                    StructField("timestamp", LongType(), True) \
+                ])
+
+    def read_ratings(self):
+        movie_schema = self.schema()
+        ratings = self.spark.read.option('sep', '\t').schema(movie_schema)
 
     
