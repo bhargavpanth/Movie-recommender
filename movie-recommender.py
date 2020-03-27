@@ -1,6 +1,7 @@
 import codecs
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, IntegerType, LongType
+from pyspark.ml.recommendation import ALS
 
 class MovieRecommender:
     def __init__(self):
@@ -28,5 +29,11 @@ class MovieRecommender:
     def read_ratings(self):
         movie_schema = self.schema()
         ratings = self.spark.read.option('sep', '\t').schema(movie_schema)
+        print(ratings.schema)
+        return ratings
 
-    
+    def apply_ALS(self):
+        ratings = self.read_ratings()
+        als = ALS().setMaxIter(5).setRegParam(0.01).setUserCol('userID').setItemCol('movieID').setRatingCol('rating')
+        return als.fit(ratings)
+
