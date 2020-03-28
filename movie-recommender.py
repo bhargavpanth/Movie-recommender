@@ -37,3 +37,7 @@ class MovieRecommender:
         als = ALS().setMaxIter(5).setRegParam(0.01).setUserCol('userID').setItemCol('movieID').setRatingCol('rating')
         return als.fit(ratings)
 
+    def recommendation(self):
+        model = self.read_ratings()
+        
+
