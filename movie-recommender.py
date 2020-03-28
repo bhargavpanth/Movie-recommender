@@ -38,6 +38,6 @@ class MovieRecommender:
         return als.fit(ratings)
 
     def recommendation(self):
-        model = self.read_ratings()
-        
+        model = self.apply_ALS()
+
 
