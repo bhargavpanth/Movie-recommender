@@ -46,9 +46,18 @@ class MovieRecommender:
 
 
 def main(id):
+    names = MovieRecommender().load_movie_names()
     recommendations = MovieRecommender().recommendation(id)
+    for userRecs in recommendations:
+        myRecs = userRecs[1]
+        for rec in myRecs:
+            movie = rec[0]
+            rating = rec[1]
+            movieName = names[movie]
+            print(movieName + str(rating))
 
 if __name__ == '__main__':
     id = int(sys.argv[1])
     main(id)
+
 
