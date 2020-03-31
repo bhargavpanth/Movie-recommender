@@ -58,6 +58,10 @@ def main(id):
 
 if __name__ == '__main__':
     id = int(sys.argv[1])
-    main(id)
+    if id:
+        main(id)
+    else:
+        print('Must pass an ID')
+        exit(0)
 
 
