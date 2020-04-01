@@ -39,7 +39,9 @@ class MovieRecommender:
         return als.fit(ratings)
 
     def recommendation(self, id):
-        model = self.apply_ALS()
+        ratings = self.read_ratings()
+        als = ALS().setMaxIter(5).setRegParam(0.01).setUserCol('userID').setItemCol('movieID').setRatingCol('rating')
+        model = als.fit(ratings)
         userSchema = StructType([StructField('userID', IntegerType(), True)])
         users = self.spark.createDataFrame([[id,]], userSchema)
         return model.recommendForUserSubset(users, 10).collect()
