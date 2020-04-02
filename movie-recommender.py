@@ -5,7 +5,8 @@ from pyspark.sql.types import StructType, StructField, IntegerType, LongType
 from pyspark.ml.recommendation import ALS
 
 class MovieRecommender:
-    def __init__(self):
+    def __init__(self, id):
+        self.id = id
         self.dataset_folder = './ml-100k/'
         self.item = self.dataset_folder + 'u.item'
         self.data = self.dataset_folder + 'u.data'
@@ -33,23 +34,17 @@ class MovieRecommender:
         print(ratings.schema)
         return ratings
 
-    def apply_ALS(self):
-        ratings = self.read_ratings()
-        als = ALS().setMaxIter(5).setRegParam(0.01).setUserCol('userID').setItemCol('movieID').setRatingCol('rating')
-        return als.fit(ratings)
-
-    def recommendation(self, id):
+    def recommendation(self):
         ratings = self.read_ratings()
         als = ALS().setMaxIter(5).setRegParam(0.01).setUserCol('userID').setItemCol('movieID').setRatingCol('rating')
         model = als.fit(ratings)
         userSchema = StructType([StructField('userID', IntegerType(), True)])
-        users = self.spark.createDataFrame([[id,]], userSchema)
+        users = self.spark.createDataFrame([[self.id,]], userSchema)
         return model.recommendForUserSubset(users, 10).collect()
 
-
 def main(id):
-    names = MovieRecommender().load_movie_names()
-    recommendations = MovieRecommender().recommendation(id)
+    names = MovieRecommender(id).load_movie_names()
+    recommendations = MovieRecommender(id).recommendation()
     for userRecs in recommendations:
         myRecs = userRecs[1]
         for rec in myRecs:
