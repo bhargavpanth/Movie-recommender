@@ -28,14 +28,9 @@ class MovieRecommender:
                     StructField("timestamp", LongType(), True) \
                 ])
 
-    def read_ratings(self):
+    def recommendation(self):
         movie_schema = self.schema()
         ratings = self.spark.read.option('sep', '\t').schema(movie_schema)
-        print(ratings.schema)
-        return ratings
-
-    def recommendation(self):
-        ratings = self.read_ratings()
         als = ALS().setMaxIter(5).setRegParam(0.01).setUserCol('userID').setItemCol('movieID').setRatingCol('rating')
         model = als.fit(ratings)
         userSchema = StructType([StructField('userID', IntegerType(), True)])
@@ -53,6 +48,7 @@ def main(id):
             movieName = names[movie]
             print(movieName + str(rating))
 
+
 if __name__ == '__main__':
     id = int(sys.argv[1])
     if id:
@@ -60,5 +56,4 @@ if __name__ == '__main__':
     else:
         print('Must pass an ID')
         exit(0)
-
 
