@@ -22,10 +22,10 @@ class MovieRecommender:
 
     def schema(self):
         return StructType([ \
-                    StructField("userID", IntegerType(), True), \
-                    StructField("movieID", IntegerType(), True), \
-                    StructField("rating", IntegerType(), True), \
-                    StructField("timestamp", LongType(), True) \
+                    StructField('userID', IntegerType(), True), \
+                    StructField('movieID', IntegerType(), True), \
+                    StructField('rating', IntegerType(), True), \
+                    StructField('timestamp', LongType(), True) \
                 ])
 
     def recommendation(self):
