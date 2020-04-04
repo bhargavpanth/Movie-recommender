@@ -12,14 +12,6 @@ class MovieRecommender:
         self.data = self.dataset_folder + 'u.data'
         self.spark = SparkSession.builder.appName('movie_recommender').getOrCreate()
 
-    def load_movie_names(self):
-        movieNames = {}
-        with codecs.open(self.item, 'r', encoding='ISO-8859-1', errors='ignore') as f:
-            for line in f:
-                fields = line.split('|')
-                movieNames[int(fields[0])] = fields[1]
-        return movieNames
-
     def schema(self):
         return StructType([ \
                     StructField('userID', IntegerType(), True), \
@@ -37,8 +29,16 @@ class MovieRecommender:
         users = self.spark.createDataFrame([[self.id,]], userSchema)
         return model.recommendForUserSubset(users, 10).collect()
 
+def load_movie_names():
+    movieNames = {}
+    with codecs.open(self.item, 'r', encoding='ISO-8859-1', errors='ignore') as f:
+        for line in f:
+            fields = line.split('|')
+            movieNames[int(fields[0])] = fields[1]
+    return movieNames
+
 def main(id):
-    names = MovieRecommender(id).load_movie_names()
+    names = load_movie_names()
     recommendations = MovieRecommender(id).recommendation()
     for userRecs in recommendations:
         myRecs = userRecs[1]
