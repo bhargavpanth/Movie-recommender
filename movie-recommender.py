@@ -8,7 +8,6 @@ class MovieRecommender:
     def __init__(self, id):
         self.id = id
         self.dataset_folder = './ml-100k/'
-        self.item = self.dataset_folder + 'u.item'
         self.data = self.dataset_folder + 'u.data'
         self.spark = SparkSession.builder.appName('movie_recommender').getOrCreate()
 
@@ -31,7 +30,8 @@ class MovieRecommender:
 
 def load_movie_names():
     movieNames = {}
-    with codecs.open(self.item, 'r', encoding='ISO-8859-1', errors='ignore') as f:
+    item = './ml-100k/u.item'
+    with codecs.open(item, 'r', encoding='ISO-8859-1', errors='ignore') as f:
         for line in f:
             fields = line.split('|')
             movieNames[int(fields[0])] = fields[1]
