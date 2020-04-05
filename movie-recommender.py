@@ -54,6 +54,6 @@ if __name__ == '__main__':
     if id:
         main(id)
     else:
-        print('Must pass an ID')
+        print('Must provide a user ID')
         exit(0)
 
