@@ -13,5 +13,10 @@ def load_movie_names():
 
 class PopularMovie:
     def __init__(self):
-        pass
+        self.spark = SparkSession.builder.appName('popular_movie').getOrCreate()
+        self.name_dict = self.spark.sparkContext.broadcast(load_movie_names())
+        
+    def look_up_name(self, movie_id):
+        return self.name_dict.value[movie_id]
 
+    
