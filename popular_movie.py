@@ -19,4 +19,14 @@ class PopularMovie:
     def look_up_name(self, movie_id):
         return self.name_dict.value[movie_id]
 
-    
+    def schema(self):
+        return StructType([ \
+                StructField('userID', IntegerType(), True), \
+                StructField('movieID', IntegerType(), True), \
+                StructField('rating', IntegerType(), True), \
+                StructField('timestamp', LongType(), True) \
+            ])
+
+    def data_frame(self):
+        schema = self.schema()
+        return self.spark.read.option('sep', '\t').schema(schema).csv('./ml-100k/u.data')
