@@ -30,3 +30,7 @@ class PopularMovie:
     def data_frame(self):
         schema = self.schema()
         return self.spark.read.option('sep', '\t').schema(schema).csv('./ml-100k/u.data')
+
+    def movie_count(self):
+        df = self.data_frame()
+        return df.groupBy('movieID').count()
